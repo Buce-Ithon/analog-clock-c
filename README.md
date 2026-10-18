@@ -1,3 +1,5 @@
+<img src="clock/assets/icon.png" width="64" alt="Analog Clock">
+
 # Introduction.
 
 This is a practise project for trying raylib and improve CMake project management. As you could see, it is an **analog clock** written in C because it is simple enough but still educational.
