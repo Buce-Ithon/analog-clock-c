@@ -18,6 +18,14 @@ float GetMouseAngle(Vector2 mouse, Vector2 center)
     return atan2f(dx, dy);
 }
 
+// Returns the shortest signed angular difference in the range [-PI, PI].
+float NormalizeAngle(float angle)
+{
+    while (angle > PI) angle -= 2.0f * PI;
+    while (angle < -PI) angle += 2.0f * PI;
+    return angle;
+}
+
 bool IsNear(Vector2 p1, Vector2 p2, Vector2 mouse)
 {
     /* 1st edition

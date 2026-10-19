@@ -3,6 +3,7 @@
 #include "clock_time.h"
 #include "clock_input.h"
 #include "camera.h"
+#include "windows_acrylic.h"
 #include <raylib.h>
 
 const int width = 600;
@@ -13,6 +14,7 @@ int main() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT | 
         FLAG_WINDOW_TRANSPARENT);
     InitWindow(width, height, "Analog Clock");
+    EnableWindowsAcrylic();
     
     Image icon = LoadImage("assets/icon.png");
     if (icon.data != NULL) {
@@ -45,6 +47,7 @@ int main() {
         EndDrawing();
     }
 
+    DisableWindowsAcrylic();
     CloseWindow();
     return 0;
 }

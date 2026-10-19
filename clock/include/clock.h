@@ -14,14 +14,30 @@ typedef struct ClockState
 
     Color clockColor;
     Color bgColor;
+    Color hourMarkerColor;
+    Color minuteMarkerColor;
 
     float hourAngle;
     float minuteAngle;
     float secondAngle;
+    float hourAngularVelocity;
+    float minuteAngularVelocity;
+    float secondAngularVelocity;
     
+    // Rotation that applies only to the minute/hour marker ring.
+    float dialAngle;
+    float dialAngularVelocity;
+    float lastDialMouseAngle;
+    Vector2 dialPressMouse;
+
     bool draggingHour;
     bool draggingMinute;
     bool draggingSecond;
+    bool draggingDial;
+    bool dialWasDragged;
+    bool returningHour;
+    bool returningMinute;
+    bool returningSecond;
 } ClockState;
 
 ClockState ClockInit(Vector2 center, int height) {
@@ -32,15 +48,28 @@ ClockState ClockInit(Vector2 center, int height) {
     clock.minuteHandLength = height * 0.4f * 0.65f;
     clock.secondHandLength = height * 0.4f * 0.8f;
     clock.clockColor = RAYWHITE;
-    clock.bgColor = (Color){31,35,53,255};
+    clock.bgColor = (Color){31,35,53,135};
+    clock.hourMarkerColor = GRAY;
+    clock.minuteMarkerColor = GRAY;
     clock.hourAngle = 0.0f;
     clock.minuteAngle = 0.0f;
     clock.secondAngle = 0.0f;
+    clock.hourAngularVelocity = 0.0f;
+    clock.minuteAngularVelocity = 0.0f;
+    clock.secondAngularVelocity = 0.0f;
+    clock.dialAngle = 0.0f;
+    clock.dialAngularVelocity = 0.0f;
+    clock.lastDialMouseAngle = 0.0f;
+    clock.dialPressMouse = center;
     clock.draggingHour = false;
     clock.draggingMinute = false;
     clock.draggingSecond = false;
+    clock.draggingDial = false;
+    clock.dialWasDragged = false;
+    clock.returningHour = false;
+    clock.returningMinute = false;
+    clock.returningSecond = false;
     return clock;
 }
-
 
 #endif // CLOCK_H

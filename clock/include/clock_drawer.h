@@ -7,9 +7,10 @@
 #include <raylib.h>
 #include "clock.h"
 
-void DrawMinuteMarkers(Vector2 center, float clockRadius, Color color)
+void DrawMinuteMarkers(Vector2 center, float clockRadius, float rotation,
+                       Color hourColor, Color minuteColor)
 {
-    float alpha = 0;
+    float alpha = rotation;
     for (int i = 0; i < 60; i++)
     {
         bool isHour = (i % 5 == 0);
@@ -26,7 +27,7 @@ void DrawMinuteMarkers(Vector2 center, float clockRadius, Color color)
         float y_outer = clockRadius * outerFactor * cosf(alpha) + center.y;
         Vector2 outer = {x_outer, y_outer};
 
-        DrawLineEx(inner, outer, thickness, color);
+        DrawLineEx(inner, outer, thickness, isHour ? hourColor : minuteColor);
 
         alpha += (2.0f * PI) / 60.0f;
     }
@@ -60,7 +61,8 @@ void DrawHand(Vector2 center, float length, float angle, float thickness, Color 
 
 void DrawClock(const ClockState *clock, Vector2 center) {
     DrawCircleV(center, clock->clockRadius, clock->clockColor);
-    DrawMinuteMarkers(center, clock->clockRadius, GRAY);
+    DrawMinuteMarkers(center, clock->clockRadius, clock->dialAngle,
+                      clock->hourMarkerColor, clock->minuteMarkerColor);
     DrawHourNumbers(center, clock->clockRadius, BLACK);
 
     DrawHand(center, clock->hourHandLength, clock->hourAngle, 5, BLACK);
