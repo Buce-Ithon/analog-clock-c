@@ -12,13 +12,11 @@ void UpdateDialSpring(ClockState *clock)
 {
     if (clock->draggingDial) return;
 
-    const float springStrength = 256.0f;
-    const float damping = 8.0f;
     float dt = GetFrameTime();
     if (dt <= 0.0f) return;
 
-    float acceleration = -springStrength * clock->dialAngle
-                       - damping * clock->dialAngularVelocity;
+    float acceleration = -clock->tuning.dialSpringStrength * clock->dialAngle
+                       - clock->tuning.dialDamping * clock->dialAngularVelocity;
     clock->dialAngularVelocity += acceleration * dt;
     clock->dialAngle += clock->dialAngularVelocity * dt;
 
@@ -133,6 +131,18 @@ void HandleClockInput(ClockState *clock, Vector2 mouse, Vector2 center) {
         if (dt > 0.0f) clock->dialAngularVelocity = -angleDelta / dt;
 
     }
+}
+
+void CancelClockInteraction(ClockState *clock)
+{
+    if (clock->draggingHour) clock->returningHour = true;
+    if (clock->draggingMinute) clock->returningMinute = true;
+    if (clock->draggingSecond) clock->returningSecond = true;
+
+    clock->draggingHour = false;
+    clock->draggingMinute = false;
+    clock->draggingSecond = false;
+    clock->draggingDial = false;
 }
 
 #endif // CLOCK_INPUT_H

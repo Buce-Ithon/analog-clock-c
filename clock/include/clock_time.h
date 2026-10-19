@@ -6,16 +6,16 @@
 #include "clock.h"
 #include "clock_math.h"
 
-void UpdateHandSpring(float *angle, float *angularVelocity, float targetAngle,
+void UpdateHandSpring(const ClockState *clock, float *angle,
+                      float *angularVelocity, float targetAngle,
                       bool *returning)
 {
-    const float springStrength = 512.0f;
-    const float damping = 10.0f;
     float dt = GetFrameTime();
     if (dt <= 0.0f) return;
 
     float displacement = NormalizeAngle(targetAngle - *angle);
-    float acceleration = springStrength * displacement - damping * *angularVelocity;
+    float acceleration = clock->tuning.handSpringStrength * displacement
+                       - clock->tuning.handDamping * *angularVelocity;
     *angularVelocity += acceleration * dt;
     *angle += *angularVelocity * dt;
 
@@ -37,21 +37,21 @@ void UpdateClockTime(ClockState *clock) {
     float targetSecondAngle = PI - t->tm_sec * (PI/30.0f);
 
     if (clock->returningHour) {
-        UpdateHandSpring(&clock->hourAngle, &clock->hourAngularVelocity,
+        UpdateHandSpring(clock, &clock->hourAngle, &clock->hourAngularVelocity,
                          targetHourAngle, &clock->returningHour);
     } else if (!clock->draggingHour) {
         clock->hourAngle = targetHourAngle;
     }
 
     if (clock->returningMinute) {
-        UpdateHandSpring(&clock->minuteAngle, &clock->minuteAngularVelocity,
+        UpdateHandSpring(clock, &clock->minuteAngle, &clock->minuteAngularVelocity,
                          targetMinuteAngle, &clock->returningMinute);
     } else if (!clock->draggingMinute) {
         clock->minuteAngle = targetMinuteAngle;
     }
 
     if (clock->returningSecond) {
-        UpdateHandSpring(&clock->secondAngle, &clock->secondAngularVelocity,
+        UpdateHandSpring(clock, &clock->secondAngle, &clock->secondAngularVelocity,
                          targetSecondAngle, &clock->returningSecond);
     } else if (!clock->draggingSecond) {
         clock->secondAngle = targetSecondAngle;

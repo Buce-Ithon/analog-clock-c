@@ -2,6 +2,8 @@
 #include "clock_drawer.h"
 #include "clock_time.h"
 #include "clock_input.h"
+#define RAYGUI_IMPLEMENTATION
+#include "clock_settings.h"
 #include "camera.h"
 #include "windows_acrylic.h"
 #include <raylib.h>
@@ -27,13 +29,19 @@ int main() {
     camera.zoom = 1.0f;
 
     ClockState clock = ClockInit(center, height);
+    bool showSettingsPanel = false;
     
     while(!WindowShouldClose()) {
+        if (IsKeyPressed(KEY_M)) {
+            showSettingsPanel = !showSettingsPanel;
+            if (showSettingsPanel) CancelClockInteraction(&clock);
+        }
+
         UpdateClockTime(&clock);
 
         Vector2 mouse = GetScreenToWorld2D(GetMousePosition(), camera);
 
-        HandleClockInput(&clock, mouse, center);
+        if (!showSettingsPanel) HandleClockInput(&clock, mouse, center);
 
         UpdateClockCamera(&camera, width, height);
 
@@ -43,6 +51,8 @@ int main() {
         BeginMode2D(camera);
         DrawClock(&clock, center);
         EndMode2D();
+
+        if (showSettingsPanel) DrawClockSettingsPanel(&clock);
 
         EndDrawing();
     }
