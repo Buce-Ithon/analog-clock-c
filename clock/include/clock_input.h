@@ -145,4 +145,16 @@ void CancelClockInteraction(ClockState *clock)
     clock->draggingDial = false;
 }
 
+void HandleClockKeyboardInput(ClockState *clock, bool *showSettingsPanel)
+{
+    if (IsKeyPressed(KEY_F)) {
+        ToggleFullscreen();
+    }
+
+    if (IsKeyPressed(KEY_M)) {
+        *showSettingsPanel = !*showSettingsPanel;
+        if (*showSettingsPanel) CancelClockInteraction(clock);
+    }
+}
+
 #endif // CLOCK_INPUT_H
