@@ -7,8 +7,9 @@
 static void InitializeClockWindow(int width, int height)
 {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT |
-                   FLAG_WINDOW_TRANSPARENT);
+                   FLAG_WINDOW_TRANSPARENT | FLAG_VSYNC_HINT);
     InitWindow(width, height, "Analog Clock");
+    SetTargetFPS(60);
     EnableWindowsAcrylic();
 
     Image icon = LoadImage("assets/icon.png");

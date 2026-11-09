@@ -5,6 +5,8 @@ add_executable(analog-clock ${clock_src} ${clock_headers})
 target_include_directories(analog-clock PRIVATE include)
 target_link_libraries(analog-clock PRIVATE raylib raygui)
 
+target_compile_definitions(analog-clock PRIVATE _CRT_SECURE_NO_WARNINGS)
+
 add_custom_command(TARGET analog-clock POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_RUNTIME_DLLS:analog-clock>
