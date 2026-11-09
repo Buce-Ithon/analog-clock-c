@@ -9,3 +9,5 @@ include(cmake/ConfigureOptions.cmake)
 
 add_subdirectory(third_party)
 add_subdirectory(clock)
+
+include(cmake/CPackOptions.cmake)

@@ -1,9 +1,13 @@
 aux_source_directory(src clock_src)
 file(GLOB_RECURSE clock_headers include/*h)
 
-add_executable(analog-clock ${clock_src} ${clock_headers})
+add_executable(analog-clock WIN32 ${clock_src} ${clock_headers})
 target_include_directories(analog-clock PRIVATE include)
 target_link_libraries(analog-clock PRIVATE raylib raygui)
+target_link_options(analog-clock PRIVATE
+    "LINKER:/subsystem:windows"
+    "LINKER:/ENTRY:mainCRTStartup"
+) # No console, only gui.
 
 target_compile_definitions(analog-clock PRIVATE _CRT_SECURE_NO_WARNINGS)
 
